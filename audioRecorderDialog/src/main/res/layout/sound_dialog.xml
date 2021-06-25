@@ -1,0 +1,146 @@
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/media_recorder_background"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:background="@color/white"
+        android:gravity="center">
+
+        <com.skyfishjy.library.RippleBackground
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:rb_color="@color/media_recorder_colorPrimary"
+            app:rb_duration="3000"
+            app:rb_radius="16dp"
+            app:rb_rippleAmount="4"
+            app:rb_scale="6">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/centerImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_mic_none" />
+        </com.skyfishjy.library.RippleBackground>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/timer"
+            style="@style/SongTitleStyle"
+            android:text="00:00"
+            android:textSize="30dp"
+            android:textStyle="bold"
+            android:typeface="serif"
+            android:visibility="gone" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <com.truizlop.fabreveallayout.FABRevealLayout
+        android:id="@+id/fab_reveal_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            style="@style/FABStyle"
+            android:src="@drawable/ic_mic_none"
+            app:backgroundTint="@color/media_recorder_colorPrimary" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/title"
+                    style="@style/AlbumTitleStyle" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/msg"
+                    style="@style/ArtistNameStyle" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/recordingLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:orientation="vertical">
+
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    style="@style/FABStyle"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/stopRecording"
+                        style="@style/MusicButtonStyle.CenterButtonStyle"
+                        android:src="@drawable/ic_stop" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/playLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    style="@style/FABStyle"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/play"
+                        style="@style/MusicButtonStyle"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_play_arrow" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/stop"
+                        style="@style/MusicButtonStyle.CenterButtonStyle"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_stop" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/save"
+                        style="@style/MusicButtonStyle"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_save" />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.AppCompatSeekBar
+                    android:id="@+id/record_progress_bar"
+                    style="@style/BarStyle"
+                    android:max="15" />
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </RelativeLayout>
+
+    </com.truizlop.fabreveallayout.FABRevealLayout>
+</androidx.appcompat.widget.LinearLayoutCompat>
