@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="media_recorder_colorAccent">#FF4081</color>
-    <color name="media_recorder_colorPrimary">#00796B</color>
+    <color name="media_recorder_colorAccent">#009688</color>
+    <color name="media_recorder_colorPrimary">#F44336</color>
     <color name="media_recorder_background">#009688</color>
-    <color name="media_recorder_bar">#80CBC4</color>
+    <color name="media_recorder_bar">#EF5350</color>
+
     <color name="white">#ffffff</color>
+    <color name="black">#2C2C2C</color>
+
+    <color name="circle_background_color">#E1E1E1</color>
+    <color name="title_background_color">#EDEDED</color>
+
 </resources>

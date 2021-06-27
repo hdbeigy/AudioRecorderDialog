@@ -26,7 +26,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:src="@drawable/ic_mic_none" />
+                app:srcCompat="@drawable/ic_mic_none" />
         </com.skyfishjy.library.RippleBackground>
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -46,7 +46,7 @@
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             style="@style/FABStyle"
-            android:src="@drawable/ic_mic_none"
+            app:srcCompat="@drawable/ic_mic_none"
             app:backgroundTint="@color/media_recorder_colorPrimary" />
 
         <RelativeLayout
@@ -90,7 +90,7 @@
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/stopRecording"
                         style="@style/MusicButtonStyle.CenterButtonStyle"
-                        android:src="@drawable/ic_stop" />
+                        app:srcCompat="@drawable/ic_stop" />
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -116,21 +116,21 @@
                         style="@style/MusicButtonStyle"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:src="@drawable/ic_play_arrow" />
+                        app:srcCompat="@drawable/ic_play" />
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/stop"
                         style="@style/MusicButtonStyle.CenterButtonStyle"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:src="@drawable/ic_stop" />
+                        app:srcCompat="@drawable/ic_stop" />
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/save"
                         style="@style/MusicButtonStyle"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:src="@drawable/ic_save" />
+                        app:srcCompat="@drawable/ic_save" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <androidx.appcompat.widget.AppCompatSeekBar

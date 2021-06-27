@@ -11,24 +11,22 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.View
 import android.view.Window
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import com.daimajia.androidanimations.library.Techniques
 import com.daimajia.androidanimations.library.YoYo
 import com.truizlop.fabreveallayout.FABRevealLayout
 import com.truizlop.fabreveallayout.OnRevealChangeListener
-import ir.hdb.audiorecorderdialog.databinding.AudioRecorderDialogBinding
+import ir.hdb.audiorecorderdialog.databinding.SoundDialogBinding
 import java.io.IOException
 
 /**
  * Created by Hadi Beigy on 05/27/21
  */
-internal class AudioRecorderDialog(
+internal class AudioRecorderDialogTemp(
     private var activity: Activity,
     private var outPutFormat: MediaRecorderDialog.OutputFormat,
     private var audioEncoder: MediaRecorderDialog.AudioEncoder,
@@ -39,7 +37,7 @@ internal class AudioRecorderDialog(
     OnSeekBarChangeListener, SoundDialogView, OnRevealChangeListener,
     DialogInterface.OnDismissListener {
 
-    private lateinit var binding: AudioRecorderDialogBinding
+    private lateinit var binding: SoundDialogBinding
 
     private var runnable: Runnable? = null
 
@@ -48,14 +46,12 @@ internal class AudioRecorderDialog(
     private var mp: MediaPlayer? = null
     private lateinit var recorder: MediaRecorder
     private var path: String? = null
-    private var recording: Boolean = false;
 
     private var isSaved = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_NO_TITLE)
-
-        binding = AudioRecorderDialogBinding.inflate(layoutInflater)
+        binding = SoundDialogBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         runnable = MyCountDownTimer(this, handler)
@@ -75,65 +71,54 @@ internal class AudioRecorderDialog(
     private fun setListeners() {
         audioManager = activity.getSystemService(Context.AUDIO_SERVICE) as AudioManager?
 
-//        binding.fabRevealLayout.setOnRevealChangeListener(this)
-        binding.audioSeekbar.setOnSeekBarChangeListener(this)
+        binding.fabRevealLayout.setOnRevealChangeListener(this)
+        binding.recordProgressBar.setOnSeekBarChangeListener(this)
 
-        binding.audioSeekbar.progress =
+        binding.recordProgressBar.progress =
             audioManager!!.getStreamVolume(AudioManager.STREAM_MUSIC)
-        binding.stopRecordingImageview.setOnClickListener(this)
+        binding.stopRecording.setOnClickListener(this)
 
-        binding.playImageview.setOnClickListener(this)
-        binding.playImageview.tag = R.drawable.ic_play
+        binding.play.setOnClickListener(this)
+        binding.play.tag = R.drawable.ic_play
 
-        binding.stopRecordingImageview.setOnClickListener(this)
-        binding.saveImageview.setOnClickListener(this)
+        binding.stop.setOnClickListener(this)
+        binding.save.setOnClickListener(this)
     }
 
     override fun onClick(view: View) {
-        if (view === binding.stopRecordingImageview) {
+        if (view === binding.stopRecording) {
             stopRecording()
-        } else if (view === binding.playImageview) {
-            if (!recording) {
-                try {
-                    recorder.prepare()
-                } catch (e: IOException) {
-                    e.printStackTrace()
-                }
-                recorder.start()
-                handler.postDelayed(runnable!!, 1000)
-                binding.stopRecordingImageview.visibility = View.VISIBLE
-                binding.playImageview.visibility = View.GONE
-                recording = true
-            } else if (binding.playImageview.tag as Int == R.drawable.ic_play) {
-                binding.playImageview.setImageDrawable(
+        } else if (view === binding.play) {
+            if (binding.play.tag as Int == R.drawable.ic_play) {
+                binding.play.setImageDrawable(
                     ContextCompat.getDrawable(
                         activity, R.drawable.ic_pause
                     )
                 )
                 handler.postDelayed(runnable!!, 1000)
-                binding.playImageview.tag = R.drawable.ic_pause
+                binding.play.tag = R.drawable.ic_pause
                 mp!!.start()
             } else {
-                binding.playImageview.setImageDrawable(
+                binding.play.setImageDrawable(
                     ContextCompat.getDrawable(
                         activity, R.drawable.ic_play
                     )
                 )
                 handler.removeCallbacks(runnable!!)
-                binding.playImageview.tag = R.drawable.ic_play
+                binding.play.tag = R.drawable.ic_play
                 mp!!.pause()
             }
-        } else if (view === binding.stopImageview) {
+        } else if (view === binding.stop) {
             handler.removeCallbacks(runnable!!)
-            runnable = MyCountDownTimer(this@AudioRecorderDialog, handler)
-            binding.playImageview.setImageDrawable(
+            runnable = MyCountDownTimer(this@AudioRecorderDialogTemp, handler)
+            binding.play.setImageDrawable(
                 ContextCompat.getDrawable(
                     activity, R.drawable.ic_play
                 )
             )
-            binding.playImageview.tag = R.drawable.ic_play
+            binding.play.tag = R.drawable.ic_play
             mp!!.stop()
-        } else if (view === binding.saveImageview) {
+        } else if (view === binding.save) {
             onSaveButtonClickListener.onSucceed(path)
             isSaved = true
             dismiss()
@@ -141,10 +126,10 @@ internal class AudioRecorderDialog(
     }
 
     private fun updateViews() {
-//        binding.recordingLayout.visibility = View.GONE
-        binding.playImageview.visibility = View.VISIBLE
-//        binding.timerTexview.visibility = View.VISIBLE
-//        binding.content.visibility = View.GONE
+        binding.recordingLayout.visibility = View.GONE
+        binding.playLayout.visibility = View.VISIBLE
+        binding.timer.visibility = View.VISIBLE
+        binding.content.visibility = View.GONE
     }
 
     override fun onProgressChanged(seekBar: SeekBar, i: Int, b: Boolean) {
@@ -154,42 +139,36 @@ internal class AudioRecorderDialog(
     override fun onStartTrackingTouch(seekBar: SeekBar) {}
     override fun onStopTrackingTouch(seekBar: SeekBar) {}
     override fun updateTimer(value: String?) {
-        binding.timerTexview.text = value
-        Log.d("hdb--", recorder.maxAmplitude.toString())
-        val value = recorder.maxAmplitude
-        handler.post {
-            binding.audioRecordView.update(value)
-        }//redraw view
+        binding.timer.text = value
     }
 
     override fun stopRecording() {
         updateViews()
         recorder.stop()
-
         handler.removeCallbacks(runnable!!)
-        runnable = MyCountDownTimer(this@AudioRecorderDialog, handler)
-//        binding.content.stopRippleAnimation()
+        runnable = MyCountDownTimer(this@AudioRecorderDialogTemp, handler)
+        binding.content.stopRippleAnimation()
         YoYo.with(Techniques.FadeIn)
             .duration(700)
-            .playOn(binding.playImageview)
+            .playOn(binding.playLayout)
         mp = MediaPlayer.create(activity, Uri.parse(path))
         mp?.setOnCompletionListener { mediaPlayer: MediaPlayer? ->
             handler.removeCallbacks(runnable!!)
-            runnable = MyCountDownTimer(this@AudioRecorderDialog, handler)
-            binding.playImageview.setImageDrawable(
+            runnable = MyCountDownTimer(this@AudioRecorderDialogTemp, handler)
+            binding.play.setImageDrawable(
                 ContextCompat.getDrawable(
                     activity,
                     R.drawable.ic_play
                 )
             )
-            binding.playImageview.tag = R.drawable.ic_play
+            binding.play.tag = R.drawable.ic_play
         }
     }
 
     override fun onMainViewAppeared(fabRevealLayout: FABRevealLayout, mainView: View) {}
     override fun onSecondaryViewAppeared(fabRevealLayout: FABRevealLayout, secondaryView: View) {
-//        binding.content.startRippleAnimation()
-//        binding.content.visibility = View.VISIBLE
+        binding.content.startRippleAnimation()
+        binding.content.visibility = View.VISIBLE
         try {
             recorder.prepare()
         } catch (e: IOException) {

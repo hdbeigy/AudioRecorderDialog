@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/title_texview"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/title_background_color"
+        android:gravity="center"
+        android:padding="8dp"
+        android:text="Recorder Dialog"
+        android:textSize="19sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/timer_texview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:text="00:00"
+        android:textColor="@color/black"
+        android:textSize="40sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title_texview" />
+
+    <com.visualizer.amplitude.AudioRecordView
+        android:id="@+id/audio_record_view"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/timer_texview" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/message_texview"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:text="start recording..."
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/audio_record_view" />
+
+    <androidx.appcompat.widget.AppCompatSeekBar
+        android:id="@+id/audio_seekbar"
+        style="@style/Widget.AppCompat.SeekBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/message_texview" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/stopRecording_imageview"
+        android:layout_width="60dp"
+        android:visibility="invisible"
+        android:layout_height="60dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/shape_circle"
+        android:padding="8dp"
+        android:tint="@color/media_recorder_colorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/audio_seekbar"
+        app:srcCompat="@drawable/ic_stop" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/play_imageview"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:tag="1616"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/shape_circle"
+        android:padding="8dp"
+        android:tint="@color/media_recorder_colorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/audio_seekbar"
+        app:srcCompat="@drawable/ic_mic_none" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/stop_imageview"
+        android:layout_width="60dp"
+        android:visibility="invisible"
+        android:layout_height="60dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/shape_circle"
+        android:padding="8dp"
+        android:tint="@color/media_recorder_colorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/audio_seekbar"
+        app:srcCompat="@drawable/ic_stop" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/save_imageview"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/shape_circle"
+        android:padding="8dp"
+        android:tint="@color/media_recorder_colorPrimary"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/play_imageview"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/play_imageview"
+        app:layout_constraintTop_toTopOf="@+id/play_imageview"
+        app:srcCompat="@drawable/ic_save" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/refresh_imageview"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/shape_circle"
+        android:padding="8dp"
+        android:tint="@color/media_recorder_colorPrimary"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/play_imageview"
+        app:layout_constraintEnd_toStartOf="@+id/play_imageview"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/play_imageview"
+        app:srcCompat="@drawable/ic_refresh" />
+</androidx.constraintlayout.widget.ConstraintLayout>

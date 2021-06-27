@@ -2,6 +2,7 @@ package ir.hdb.audiorecorderdialog
 
 import android.Manifest
 import android.app.Activity
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
@@ -13,41 +14,40 @@ import com.karumi.dexter.listener.multi.MultiplePermissionsListener
  */
 class MediaRecorderDialog {
     class Builder(private val context: Activity) {
-        fun setTitle(title: String?): Builder {
-            AppConstants.title = title
+
+        private var title: String = ""
+        private var message: String = ""
+        private var outPutFormat: OutputFormat
+        private var audioEncoder: AudioEncoder
+        private var onSaveButtonClickListener: OnSaveButtonClickListener? = null
+        private var length = -1
+
+        fun setTitle(title: String): Builder {
+            this.title = title
             return this
         }
 
-        fun setMessage(msg: String?): Builder {
-            AppConstants.message = msg
+        fun setMessage(message: String): Builder {
+            this.message = message
             return this
         }
 
         fun show(): Builder {
-//            new SoundDialog(GenralAtteribute.context).show();
-//            new Gota(GenralAtteribute.context).checkPermission(new String[]{Manifest.permission.RECORD_AUDIO
-//                    ,Manifest.permission.}, new Gota.OnRequestPermissionsBack() {
-//                @Override
-//                public void onRequestBack(GotaResponse goaResponse) {
-//
-//                }
-//            });
-//            Dexter.withContext(GenralAtteribute.context)
-//                    .withPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-//                    .withListener(new PermissionListener() {
-//                        @Override public void onPermissionGranted(PermissionGrantedResponse response) {
-//                            new SoundDialog(GenralAtteribute.context).show();
-//                        }
-//                        @Override public void onPermissionDenied(PermissionDeniedResponse response) {/* ... */}
-//                        @Override public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {/* ... */}
-//                    }).check();
             Dexter.withContext(context)
                 .withPermissions(
                     Manifest.permission.WRITE_EXTERNAL_STORAGE,
                     Manifest.permission.RECORD_AUDIO
                 ).withListener(object : MultiplePermissionsListener {
                     override fun onPermissionsChecked(report: MultiplePermissionsReport) {
-                        AudioRecorderDialog(context).show()
+                        val dialog = AudioRecorderDialog(
+                            context,
+                            outPutFormat,
+                            audioEncoder,
+                            onSaveButtonClickListener!!
+                        )
+                            dialog.show()
+
+                        dialog.window?.setLayout(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
                     }
 
                     override fun onPermissionRationaleShouldBeShown(
@@ -59,31 +59,31 @@ class MediaRecorderDialog {
             return this
         }
 
-        fun setOutputFormat(outputFormat: OutputFormat?): Builder {
-            AppConstants.outPutFormat = outputFormat
+        fun setOutputFormat(outputFormat: OutputFormat): Builder {
+            this.outPutFormat = outputFormat
             return this
         }
 
-        fun setAudioEncoder(audioEncoder: AudioEncoder?): Builder {
-            AppConstants.audioEncoder = audioEncoder
+        fun setAudioEncoder(audioEncoder: AudioEncoder): Builder {
+            this.audioEncoder = audioEncoder
             return this
         }
 
         fun setOnSaveButtonClickListener(onSaveButtonClickListener: OnSaveButtonClickListener?): Builder {
-            AppConstants.onSaveButtonClickListener = onSaveButtonClickListener
+            this.onSaveButtonClickListener = onSaveButtonClickListener
             return this
         }
 
         fun setMaxLength(timeUnit: TimeUnit, length: Int): Builder {
-            AppConstants.length = length * timeUnit.value
+            this.length = length * timeUnit.value
             return this
         }
 
         init {
-            AppConstants.title = ""
-            AppConstants.message = ""
-            AppConstants.outPutFormat = OutputFormat.MPEG_4
-            AppConstants.audioEncoder = AudioEncoder.AAC
+            this.title = ""
+            this.message = ""
+            this.outPutFormat = OutputFormat.MPEG_4
+            this.audioEncoder = AudioEncoder.AAC
         }
     }
 
