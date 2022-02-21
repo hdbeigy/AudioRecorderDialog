@@ -87,7 +87,7 @@ internal class AudioRecorderDialogTemp(
 
     override fun onClick(view: View) {
         if (view === binding.stopRecording) {
-            stopRecording()
+//            stopRecording(length)
         } else if (view === binding.play) {
             if (binding.play.tag as Int == R.drawable.ic_play) {
                 binding.play.setImageDrawable(
@@ -138,7 +138,7 @@ internal class AudioRecorderDialogTemp(
 
     override fun onStartTrackingTouch(seekBar: SeekBar) {}
     override fun onStopTrackingTouch(seekBar: SeekBar) {}
-    override fun updateTimer(value: String?) {
+    override fun updateTimer(value: String?, sec: Int) {
         binding.timer.text = value
     }
 

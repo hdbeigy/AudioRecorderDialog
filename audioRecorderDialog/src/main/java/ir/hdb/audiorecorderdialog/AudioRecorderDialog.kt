@@ -16,7 +16,6 @@ import android.view.View
 import android.view.Window
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import com.daimajia.androidanimations.library.Techniques
 import com.daimajia.androidanimations.library.YoYo
@@ -58,6 +57,7 @@ internal class AudioRecorderDialog(
         binding = AudioRecorderDialogBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
         runnable = MyCountDownTimer(this, handler)
 
         setListeners()
@@ -76,10 +76,12 @@ internal class AudioRecorderDialog(
         audioManager = activity.getSystemService(Context.AUDIO_SERVICE) as AudioManager?
 
 //        binding.fabRevealLayout.setOnRevealChangeListener(this)
-        binding.audioSeekbar.setOnSeekBarChangeListener(this)
 
-        binding.audioSeekbar.progress =
-            audioManager!!.getStreamVolume(AudioManager.STREAM_MUSIC)
+//        binding.audioSeekbar.setOnSeekBarChangeListener(this)
+
+//        binding.audioSeekbar.progress =
+//            audioManager!!.getStreamVolume(AudioManager.STREAM_MUSIC)
+
         binding.stopRecordingImageview.setOnClickListener(this)
 
         binding.playImageview.setOnClickListener(this)
@@ -87,6 +89,7 @@ internal class AudioRecorderDialog(
 
         binding.stopRecordingImageview.setOnClickListener(this)
         binding.saveImageview.setOnClickListener(this)
+        binding.refreshImageview.setOnClickListener(this)
     }
 
     override fun onClick(view: View) {
@@ -103,6 +106,12 @@ internal class AudioRecorderDialog(
                 handler.postDelayed(runnable!!, 1000)
                 binding.stopRecordingImageview.visibility = View.VISIBLE
                 binding.playImageview.visibility = View.GONE
+                binding.timerTexview.setTextColor(
+                    ContextCompat.getColor(
+                        context,
+                        R.color.audio_dialog_colorPrimary
+                    )
+                )
                 recording = true
             } else if (binding.playImageview.tag as Int == R.drawable.ic_play) {
                 binding.playImageview.setImageDrawable(
@@ -137,34 +146,77 @@ internal class AudioRecorderDialog(
             onSaveButtonClickListener.onSucceed(path)
             isSaved = true
             dismiss()
+        } else if (view == binding.refreshImageview) {
+            refreshView()
         }
     }
 
-    private fun updateViews() {
-//        binding.recordingLayout.visibility = View.GONE
+    private fun refreshView() {
+        recording = false;
+//        binding.stopRecordingImageview.visibility = View.VISIBLE
+        binding.messageTexview.visibility = View.VISIBLE
+        binding.audioSeekbar.visibility = View.GONE
+        binding.saveImageview.visibility = View.GONE
+        binding.refreshImageview.visibility = View.GONE
         binding.playImageview.visibility = View.VISIBLE
+        binding.playImageview.setImageResource(R.drawable.ic_mic_none)
+        recorder.reset()
+        recorder.setAudioSource(MediaRecorder.AudioSource.MIC)
+        recorder.setOutputFormat(outPutFormat.value)
+        recorder.setAudioEncoder(audioEncoder.value)
+
+        path = this.context.cacheDir.toString() + "/" + System.currentTimeMillis() + ".mp4"
+        recorder.setOutputFile(path)
+
+        binding.timerTexview.setText("00:00")
+//        recorder.reset()
+    }
+
+    private fun updateViews() {
+        binding.stopRecordingImageview.visibility = View.GONE
+        binding.messageTexview.visibility = View.GONE
+        binding.audioSeekbar.visibility = View.VISIBLE
+        binding.saveImageview.visibility = View.VISIBLE
+        binding.refreshImageview.visibility = View.VISIBLE
+        binding.playImageview.visibility = View.VISIBLE
+        binding.playImageview.setImageResource(R.drawable.ic_play)
+
 //        binding.timerTexview.visibility = View.VISIBLE
 //        binding.content.visibility = View.GONE
     }
 
     override fun onProgressChanged(seekBar: SeekBar, i: Int, b: Boolean) {
+        Log.d("hdb---", i.toString())
         audioManager!!.setStreamVolume(AudioManager.STREAM_MUSIC, i, 0)
     }
 
     override fun onStartTrackingTouch(seekBar: SeekBar) {}
     override fun onStopTrackingTouch(seekBar: SeekBar) {}
-    override fun updateTimer(value: String?) {
+    override fun updateTimer(value: String?, sec: Int) {
         binding.timerTexview.text = value
-        Log.d("hdb--", recorder.maxAmplitude.toString())
-        val value = recorder.maxAmplitude
-        handler.post {
-            binding.audioRecordView.update(value)
-        }//redraw view
+
+        Log.d("hdb---", sec.toString())
+        if (recording)
+            binding.audioSeekbar.progress = sec
+
+//        Log.d("hdb--", recorder.maxAmplitude.toString())
+//        val value = recorder.maxAmplitude
+//        handler.post {
+//            binding.audioRecordView.update(value)
+//        }//redraw view
     }
 
     override fun stopRecording() {
+
         updateViews()
         recorder.stop()
+
+        binding.timerTexview.setTextColor(
+            ContextCompat.getColor(
+                context,
+                R.color.black
+            )
+        )
 
         handler.removeCallbacks(runnable!!)
         runnable = MyCountDownTimer(this@AudioRecorderDialog, handler)
@@ -183,6 +235,12 @@ internal class AudioRecorderDialog(
                 )
             )
             binding.playImageview.tag = R.drawable.ic_play
+        }
+        if (mp != null) {
+            Log.d("hdb->>", mp!!.duration.toString())
+            binding.audioSeekbar.max = mp!!.duration / 1000
+            binding.audioSeekbar.progress = 0
+
         }
     }
 

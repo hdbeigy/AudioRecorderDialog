@@ -18,7 +18,7 @@ internal class MyCountDownTimer(private val mView: SoundDialogView, private val 
         if (length != -1) {
             if (length < sec + min * 60) mView.stopRecording()
         }
-        mView.updateTimer(String.format("%02d", min) + ":" + String.format("%02d", sec))
+        mView.updateTimer(String.format("%02d", min) + ":" + String.format("%02d", sec), sec)
         handler.postDelayed(this, 1000)
     }
 }

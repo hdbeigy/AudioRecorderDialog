@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="media_recorder_colorAccent">#009688</color>
-    <color name="media_recorder_colorPrimary">#F44336</color>
-    <color name="media_recorder_background">#009688</color>
-    <color name="media_recorder_bar">#EF5350</color>
+    <color name="audio_dialog_colorAccent">#009688</color>
+    <color name="audio_dialog_colorPrimary">#F44336</color>
+    <color name="audio_dialog_background">#009688</color>
+    <color name="audio_dialog_recorder_bar">#EF5350</color>
 
     <color name="white">#ffffff</color>
     <color name="black">#2C2C2C</color>
 
-    <color name="circle_background_color">#E1E1E1</color>
-    <color name="title_background_color">#EDEDED</color>
+    <color name="audio_dialog_circle_background">#E1E1E1</color>
+    <color name="audio_dialog_header_background">#EDEDED</color>
+
+    <color name="audio_dialog_title_color">#2E2E2E</color>
+    <color name="audio_dialog_header_color">#2E2E2E</color>
 
 </resources>
